@@ -17,10 +17,8 @@
 
 package com.example.android.marsrealestate.overview
 
-import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.GridView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
