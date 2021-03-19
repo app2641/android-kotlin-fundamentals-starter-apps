@@ -25,19 +25,21 @@ import com.example.android.marsrealestate.network.MarsApi
 import com.example.android.marsrealestate.network.MarsProperty
 import kotlinx.coroutines.launch
 
+enum class MarsApiStatus { LOADING, ERROR, DONE }
+
 /**
  * The [ViewModel] that is attached to the [OverviewFragment].
  */
 class OverviewViewModel : ViewModel() {
 
     // The internal MutableLiveData String that stores the most recent response
-    private val _response = MutableLiveData<String>()
+    private val _status = MutableLiveData<MarsApiStatus>()
 
     private val _property = MutableLiveData<List<MarsProperty>>()
 
     // The external immutable LiveData for the response String
-    val response: LiveData<String>
-        get() = _response
+    val status: LiveData<MarsApiStatus>
+        get() = _status
 
     val property: LiveData<List<MarsProperty>>
         get() = _property
@@ -56,9 +58,10 @@ class OverviewViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 _property.value = MarsApi.retrofitService.getProperties()
-                _response.value = "Success: Mars properties retrieve"
+                _status.value = MarsApiStatus.DONE
             } catch (e: Exception) {
-                _response.value = "Failure: ${e.message}"
+                _status.value = MarsApiStatus.ERROR
+                _property.value = ArrayList()
             }
         }
     }
